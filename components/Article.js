@@ -154,15 +154,7 @@ function articleMaker(articleObj) {
   const expBtn = document.createElement("span");
   expBtn.classList.add("expandButton");
   expBtn.textContent = "+";
-  expBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const classnameList = Array.from(e.target.parentNode.classList);
-    if (classnameList.includes("article-open")) {
-      e.target.parentNode.classList.remove("article-open");
-    } else {
-      e.target.parentNode.classList.add("article-open");
-    }
-  });
+  expBtn.addEventListener("click", (e) => openArticle(e));
 
   article.appendChild(title);
   article.appendChild(date);
@@ -174,7 +166,32 @@ function articleMaker(articleObj) {
   return article;
 }
 
+const openArticle = (e) => {
+  e.preventDefault();
+  const classnameList = Array.from(e.target.parentNode.classList);
+  if (classnameList.includes("article-open")) {
+    e.target.parentNode.classList.remove("article-open");
+  } else {
+    e.target.parentNode.classList.add("article-open");
+  }
+};
+
+const closeBtn = (data) => {
+  const close = $("<span></span>").addClass("close").html("Read");
+
+  const article = $(".article");
+  article.append(close);
+
+  $(".close").each(function (a) {
+    $(this).on("click", (e) => {
+      $(this).parent().css("display", "none");
+    });
+  });
+};
+
 data.forEach((content) => {
   const articles = document.querySelector(".articles");
   articles.appendChild(articleMaker(content));
 });
+
+closeBtn(data);
